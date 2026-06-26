@@ -750,9 +750,40 @@ function handleSearch(query) {
 
 // 9. CLIENT SIDE SPA ROUTING
 const routes = {
-  "/": renderHome,
-  "/new-arrivals": () => renderShop("New Arrivals", null),
-  "/denim": () => renderShop("Denim Collection", "denim"),
+  "/": () => {
+    activeFilters.section = null;
+    renderHome();
+  },
+  "/new-arrivals": () => {
+    activeFilters.section = null;
+    activeFilters.category = [];
+    activeFilters.size = [];
+    renderShop("New Arrivals", null);
+  },
+  "/kids": () => {
+    activeFilters.section = "kids";
+    activeFilters.category = [];
+    activeFilters.size = [];
+    renderShop("Kids Collection", null);
+  },
+  "/women": () => {
+    activeFilters.section = "women";
+    activeFilters.category = [];
+    activeFilters.size = [];
+    renderShop("Women Collection", null);
+  },
+  "/mens": () => {
+    activeFilters.section = "mens";
+    activeFilters.category = [];
+    activeFilters.size = [];
+    renderShop("Mens Collection", null);
+  },
+  "/denim": () => {
+    activeFilters.section = null;
+    activeFilters.category = [];
+    activeFilters.size = [];
+    renderShop("Denim Collection", "denim");
+  },
   "/collections": renderCollections,
   "/sustainability": renderSustainability,
   "/product/:id": renderProductDetail,
@@ -1224,7 +1255,8 @@ let activeFilters = {
   category: [],
   size: [],
   minPrice: null,
-  maxPrice: null
+  maxPrice: null,
+  section: null
 };
 
 function renderShop(title, categoryFilter = null) {
@@ -1238,6 +1270,11 @@ function renderShop(title, categoryFilter = null) {
 
   // Filter Catalog
   let filtered = PRODUCTS.filter(p => {
+    // Section/Department Filter
+    if (activeFilters.section === "kids" && !p.id.startsWith("kid-")) return false;
+    if (activeFilters.section === "women" && !p.id.startsWith("women-")) return false;
+    if (activeFilters.section === "mens" && (p.id.startsWith("kid-") || p.id.startsWith("women-"))) return false;
+
     if (activeFilters.category.length && !activeFilters.category.includes(p.category)) return false;
     if (activeFilters.size.length && !p.sizes.some(s => activeFilters.size.includes(s))) return false;
     return true;
@@ -1291,14 +1328,24 @@ function renderShop(title, categoryFilter = null) {
             <div>
               <h3 class="font-label-sm text-label-sm uppercase tracking-[0.2em] mb-6 text-on-surface-variant">Size</h3>
               <div class="grid grid-cols-4 gap-2">
-                ${["S", "M", "L", "XL"].map(size => {
-                  const isActive = activeFilters.size.includes(size);
-                  return `
-                    <button class="py-2 text-center font-label-sm text-label-sm transition-colors border ${isActive ? 'bg-white text-black border-white' : 'border-white/10 text-on-surface hover:border-white'}" onclick="toggleFilterSizeStitch('${size}', '${title}')">
-                      ${size}
-                    </button>
-                  `;
-                }).join("")}
+                ${(function() {
+                  let sizes = ["S", "M", "L", "XL"];
+                  if (activeFilters.section === "kids") {
+                    sizes = ["2Y", "4Y", "6Y", "8Y"];
+                  } else if (activeFilters.section === "women") {
+                    sizes = ["XS", "S", "M", "L", "24", "26", "28", "30", "32"];
+                  } else if (activeFilters.section === "mens") {
+                    sizes = ["S", "M", "L", "XL", "28", "30", "32", "34", "36"];
+                  }
+                  return sizes.map(size => {
+                    const isActive = activeFilters.size.includes(size);
+                    return `
+                      <button class="py-2 text-center font-label-sm text-label-sm transition-colors border ${isActive ? 'bg-white text-black border-white' : 'border-white/10 text-on-surface hover:border-white'}" onclick="toggleFilterSizeStitch('${size}', '${title}')">
+                        ${size}
+                      </button>
+                    `;
+                  }).join("");
+                })()}
               </div>
             </div>
             
