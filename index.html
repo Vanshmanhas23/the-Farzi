@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THEFARZI | Exclusively Tailored Contemporary Wear</title>
+  <!-- Google Fonts: Space Grotesk and Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Local Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- HEADER -->
+  <header id="header" class="main-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <a href="#/" class="logo">THE FARZI</a>
+      </div>
+      
+      <!-- DESKTOP NAV -->
+      <nav class="desktop-nav">
+        <ul>
+          <li><a href="#/new-arrivals" class="nav-link">New Arrivals</a></li>
+          <li><a href="#/denim" class="nav-link">Denim</a></li>
+          <li><a href="#/collections" class="nav-link">Collections</a></li>
+          <li><a href="#/sustainability" class="nav-link">Sustainability</a></li>
+        </ul>
+      </nav>
+
+      <!-- UTILITY ICONS -->
+      <div class="utility-nav">
+        <button id="search-trigger" class="utility-btn" aria-label="Search">
+          <i data-lucide="search"></i>
+        </button>
+        <button id="wishlist-trigger" class="utility-btn" aria-label="Wishlist">
+          <i data-lucide="heart"></i>
+        </button>
+        <button id="cart-trigger" class="utility-btn cart-btn" aria-label="Shopping Cart">
+          <i data-lucide="shopping-bag"></i>
+          <span id="cart-badge" class="cart-badge">0</span>
+        </button>
+        <button id="mobile-menu-trigger" class="utility-btn mobile-only" aria-label="Open Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU DRAWER -->
+  <div id="mobile-menu" class="drawer drawer-left">
+    <div class="drawer-overlay" class="drawer-overlay-close"></div>
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3>THEFARZI</h3>
+        <button id="mobile-menu-close" class="close-btn"><i data-lucide="x"></i></button>
+      </div>
+      <nav class="mobile-nav-links">
+        <a href="#/new-arrivals" class="mobile-nav-link">New Arrivals</a>
+        <a href="#/denim" class="mobile-nav-link">Denim</a>
+        <a href="#/collections" class="mobile-nav-link">Collections</a>
+        <a href="#/sustainability" class="mobile-nav-link">Sustainability</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- SEARCH OVERLAY -->
+  <div id="search-modal" class="search-overlay">
+    <div class="search-overlay-bg" id="search-overlay-bg-close"></div>
+    <div class="search-container">
+      <div class="search-header">
+        <div class="search-input-wrapper">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="search-input" placeholder="SEARCH PRODUCTS..." autocomplete="off">
+        </div>
+        <button id="search-close" class="close-btn"><i data-lucide="x"></i></button>
+      </div>
+      <div id="search-results" class="search-results">
+        <!-- Results rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- WISHLIST DRAWER -->
+  <div id="wishlist-drawer" class="drawer drawer-right">
+    <div class="drawer-overlay" id="wishlist-overlay-close"></div>
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3>WISHLIST (<span id="wishlist-count">0</span>)</h3>
+        <button id="wishlist-close" class="close-btn"><i data-lucide="x"></i></button>
+      </div>
+      <div id="wishlist-items" class="drawer-body wishlist-body">
+        <!-- Wishlist items rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div id="cart-drawer" class="drawer drawer-right">
+    <div class="drawer-overlay" id="cart-overlay-close"></div>
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3>SHOPPING BAG (<span id="cart-count">0</span>)</h3>
+        <button id="cart-close" class="close-btn"><i data-lucide="x"></i></button>
+      </div>
+      <div id="cart-items" class="drawer-body cart-body">
+        <!-- Cart items rendered by JS -->
+      </div>
+      <div class="cart-footer">
+        <div class="cart-subtotal">
+          <span>SUBTOTAL</span>
+          <span id="cart-subtotal-value">₹0</span>
+        </div>
+        <p class="shipping-note">Taxes and shipping calculated at checkout.</p>
+        <button id="cart-checkout-btn" class="btn btn-primary btn-block">PROCEED TO CHECKOUT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACQUIRE LOOK BOTTOM/SIDE DRAWER -->
+  <div id="look-drawer" class="drawer drawer-right">
+    <div class="drawer-overlay" id="look-overlay-close"></div>
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3 id="look-drawer-title">ACQUIRE LOOK</h3>
+        <button id="look-drawer-close" class="close-btn"><i data-lucide="x"></i></button>
+      </div>
+      <div id="look-drawer-body" class="drawer-body look-body">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="look-drawer-footer">
+        <button id="add-look-to-cart" class="btn btn-primary btn-block">ADD ENTIRE LOOK TO BAG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIZE GUIDE MODAL -->
+  <div id="size-modal" class="modal">
+    <div class="modal-overlay" id="size-overlay-close"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>SIZE GUIDE</h3>
+        <button id="size-modal-close" class="close-btn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <table class="size-table">
+          <thead>
+            <tr>
+              <th>SIZE</th>
+              <th>CHEST (INCHES)</th>
+              <th>WAIST (INCHES)</th>
+              <th>SLEEVE (INCHES)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>S</td>
+              <td>35 - 37</td>
+              <td>29 - 31</td>
+              <td>32.5</td>
+            </tr>
+            <tr>
+              <td>M</td>
+              <td>38 - 40</td>
+              <td>32 - 34</td>
+              <td>33.5</td>
+            </tr>
+            <tr>
+              <td>L</td>
+              <td>41 - 43</td>
+              <td>35 - 37</td>
+              <td>34.5</td>
+            </tr>
+            <tr>
+              <td>XL</td>
+              <td>44 - 46</td>
+              <td>38 - 40</td>
+              <td>35.5</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN ROUTE CONTAINER -->
+  <main id="main-content">
+    <!-- Router renders views here -->
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h2 class="footer-logo">THEFARZI</h2>
+        <p>Exclusively tailored contemporary wear redefining standard aesthetic structures.</p>
+        <form id="newsletter-form" class="newsletter-form">
+          <input type="email" id="newsletter-email" placeholder="ENTER YOUR EMAIL" required>
+          <button type="submit" class="newsletter-submit">SUBSCRIBE</button>
+        </form>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-col">
+          <h4>SHOP</h4>
+          <ul>
+            <li><a href="#/new-arrivals">New Arrivals</a></li>
+            <li><a href="#/denim">Denim</a></li>
+            <li><a href="#/collections">Collections</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-col">
+          <h4>COMPANY</h4>
+          <ul>
+            <li><a href="#/sustainability">Sustainability</a></li>
+            <li><a href="#/sustainability">Production</a></li>
+            <li><a href="#/sustainability">Ethics</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-col">
+          <h4>SUPPORT</h4>
+          <ul>
+            <li><a href="#" id="footer-size-guide">Size Guide</a></li>
+            <li><a href="#">Shipping & Returns</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 THEFARZI. ALL RIGHTS RESERVED. TERMS & PRIVACY.</p>
+    </div>
+  </footer>
+
+  <!-- Script initialization -->
+  <script src="script.js"></script>
+</body>
+</html>
