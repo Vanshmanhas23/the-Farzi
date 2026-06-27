@@ -1060,8 +1060,6 @@ function renderHome() {
 
             <!-- Campaign Look Info Card (Overlaying bottom left of image) -->
             <div class="look-metadata-container">
-              <span class="look-tag">${look.tag}</span>
-              <h2 class="look-name">${look.name}</h2>
               <div class="look-cta-row">
                 <button class="btn btn-primary" onclick="openLookDrawer(${state.currentLookIndex})">ACQUIRE LOOK</button>
               </div>
