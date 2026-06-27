@@ -394,7 +394,8 @@ const LOOKS = [
       { top: "38%", left: "49%", brand: "THEFARZI", name: "DECONSTRUCT DENIM JACKET", price: "₹8,499", align: "right", productId: "deconstruct-denim-jacket" },
       { top: "52%", left: "48%", brand: "THEFARZI", name: "CLASSIC LEATHER BELT", price: "₹3,499", align: "right", productId: "classic-leather-belt" },
       { top: "66%", left: "47%", brand: "THEFARZI", name: "RELAXED RAW SELVEDGE", price: "₹9,499", align: "right", productId: "relaxed-raw-selvedge" }
-    ]
+    ],
+    headline: ["RAW EDGE", "SILHOUETTE", "STRUCTURES"]
   },
   {
     id: "look-02",
@@ -407,7 +408,8 @@ const LOOKS = [
       { top: "40%", left: "49%", brand: "THEFARZI", name: "HEWEIGHT BOX TEE", price: "₹6,499", align: "right", productId: "heavyweight-box-tee" },
       { top: "53%", left: "49%", brand: "THEFARZI", name: "CLASSIC LEATHER BELT", price: "₹3,499", align: "right", productId: "classic-leather-belt" },
       { top: "67%", left: "46%", brand: "THEFARZI", name: "RELAXED RAW SELVEDGE", price: "₹9,499", align: "right", productId: "relaxed-raw-selvedge" }
-    ]
+    ],
+    headline: ["OVERSIZED", "BOX SILHOUETTE", "PROPORTIONS"]
   },
   {
     id: "look-03",
@@ -420,7 +422,8 @@ const LOOKS = [
       { top: "40%", left: "47%", brand: "THEFARZI", name: "RAW EDGE BLACK JACKET", price: "₹8,499", align: "right", productId: "raw-edge-jacket-black" },
       { top: "52%", left: "47%", brand: "THEFARZI", name: "CLASSIC LEATHER BELT", price: "₹3,499", align: "right", productId: "classic-leather-belt" },
       { top: "66%", left: "45%", brand: "THEFARZI", name: "RELAXED BLACK SELVEDGE", price: "₹9,499", align: "right", productId: "relaxed-black-selvedge" }
-    ]
+    ],
+    headline: ["DISTRESSED", "BLACK OUTLINE", "ARCHIVE"]
   }
 ];
 
@@ -921,6 +924,85 @@ window.handlePinLeave = function() {
   isHotspotHovered = false;
 };
 
+// --- TYPEWRITER EFFECT HELPER ---
+let currentTypewriterTimeout = null;
+
+function typeWriter(element, lines, startDelay = 500) {
+  // Clear any existing typewriter timeouts
+  if (currentTypewriterTimeout) {
+    clearTimeout(currentTypewriterTimeout);
+    currentTypewriterTimeout = null;
+  }
+
+  // Clear element and build structured HTML
+  element.innerHTML = "";
+  
+  // Create spans for each line
+  const spans = lines.map((lineText) => {
+    const lineSpan = document.createElement("span");
+    lineSpan.className = "typewriter-line";
+    lineSpan.style.display = "block";
+    lineSpan.style.position = "relative";
+    
+    const textSpan = document.createElement("span");
+    textSpan.className = "typewriter-text";
+    textSpan.innerHTML = lineText.split("").map(char => `<span class="typewriter-char" style="color: transparent;">${char === " " ? "&nbsp;" : char}</span>`).join("");
+    
+    lineSpan.appendChild(textSpan);
+    element.appendChild(lineSpan);
+    return textSpan;
+  });
+
+  // Create cursor
+  const cursor = document.createElement("span");
+  cursor.className = "typewriter-cursor";
+  
+  // Append cursor initially to the first line
+  if (spans.length > 0) {
+    spans[0].appendChild(cursor);
+  }
+
+  let currentLine = 0;
+  let currentChar = 0;
+
+  function typeNext() {
+    if (currentLine >= lines.length) {
+      // Completed typing all lines! Keep cursor blinking, then remove it
+      currentTypewriterTimeout = setTimeout(() => {
+        cursor.remove();
+      }, 4000);
+      return;
+    }
+
+    const lineText = lines[currentLine];
+    const textContainer = spans[currentLine];
+    const charSpans = textContainer.querySelectorAll(".typewriter-char");
+
+    if (currentChar < lineText.length) {
+      // Make character visible
+      if (charSpans[currentChar]) {
+        charSpans[currentChar].style.color = "inherit";
+        // Move cursor
+        textContainer.insertBefore(cursor, charSpans[currentChar].nextSibling);
+      }
+      currentChar++;
+      currentTypewriterTimeout = setTimeout(typeNext, 45);
+    } else {
+      currentLine++;
+      currentChar = 0;
+      if (currentLine < lines.length) {
+        spans[currentLine].appendChild(cursor);
+        currentTypewriterTimeout = setTimeout(typeNext, 120);
+      } else {
+        typeNext();
+      }
+    }
+  }
+
+  // Start typing after startDelay
+  currentTypewriterTimeout = setTimeout(typeNext, startDelay);
+}
+
 // --- HOME PAGE VIEW ---
 function renderHome() {
   const container = document.getElementById("main-content");
@@ -940,7 +1022,7 @@ function renderHome() {
         <div id="page-wiper" class="page-wiper"></div>
         <div class="hero-left">
           <h4 class="brand-statement">EXCLUSIVELY TAILORED CONTEMPORARY WEAR</h4>
-          <h1 class="hero-headline">REDEFINING<br>THE STANDARD<br>AESTHETIC</h1>
+          <h1 class="hero-headline" id="hero-typed-headline"></h1>
           
           <!-- Bottom left thumbnails of look items -->
           <div class="hero-products-thumbnails">
@@ -1128,6 +1210,12 @@ function renderHome() {
 
   // Start the hotspot tooltip auto-cycling
   startHotspotCycle();
+
+  // Trigger typewriter effect for the hero headline
+  const typedHeadline = document.getElementById("hero-typed-headline");
+  if (typedHeadline) {
+    typeWriter(typedHeadline, look.headline || ["REDEFINING", "THE STANDARD", "AESTHETIC"]);
+  }
 }
 
 function switchLook(dir) {

@@ -2662,3 +2662,19 @@ img {
     left: 100%;
   }
 }
+
+/* TYPEWRITER CURSOR & EFFECTS */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background-color: var(--color-white);
+  vertical-align: text-bottom;
+  margin-left: 4px;
+  animation: typewriter-blink 0.75s step-end infinite;
+}
+
+@keyframes typewriter-blink {
+  from, to { background-color: transparent }
+  50% { background-color: var(--color-white) }
+}
