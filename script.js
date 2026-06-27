@@ -1099,6 +1099,27 @@ function renderHome() {
               <span class="category-card-link">VIEW ARCHIVE</span>
             </div>
           </div>
+          <div class="category-card" onclick="window.location.hash = '#/kids'">
+            <img src="images/product_kid_jacket.png" alt="Kids Category">
+            <div class="category-overlay">
+              <h3 class="category-card-title">KIDS</h3>
+              <span class="category-card-link">SHOP KIDS</span>
+            </div>
+          </div>
+          <div class="category-card" onclick="window.location.hash = '#/women'">
+            <img src="images/product_women_jacket.png" alt="Women Category">
+            <div class="category-overlay">
+              <h3 class="category-card-title">WOMEN</h3>
+              <span class="category-card-link">SHOP WOMEN</span>
+            </div>
+          </div>
+          <div class="category-card" onclick="window.location.hash = '#/mens'">
+            <img src="images/product_men_shirt.png" alt="Mens Category">
+            <div class="category-overlay">
+              <h3 class="category-card-title">MENS</h3>
+              <span class="category-card-link">SHOP MENS</span>
+            </div>
+          </div>
         </div>
       </section>
 
